@@ -5,3 +5,7 @@ benchmark_code/build
 
 minimal_code/scoda
 
+# Datasets, compressed or otherwise.
+dataout
+datasets
+
