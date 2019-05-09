@@ -6,6 +6,7 @@ benchmark_code/CMakeFiles/
 benchmark_code/Makefile
 benchmark_code/cmake_install.cmake
 benchmark_code/compile_commands.json
+benchmark_code/scoda
 
 minimal_code/scoda
 
