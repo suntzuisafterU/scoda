@@ -1,4 +1,5 @@
 **/*.vscode
+**/*.DS_Store
 
 # Binaries and build generated code
 benchmark_code/build
