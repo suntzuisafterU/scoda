@@ -1,12 +1,7 @@
 **/*.vscode
 
 # Binaries and build generated code
-benchmark_code/CMakeCache.txt
-benchmark_code/CMakeFiles/
-benchmark_code/Makefile
-benchmark_code/cmake_install.cmake
-benchmark_code/compile_commands.json
-benchmark_code/scoda
+benchmark_code/build
 
 minimal_code/scoda
 
