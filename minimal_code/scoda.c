@@ -8,8 +8,9 @@
 
 int main( int argc, char *argv[] )
 {
+    printf("argc: %d\n", argc);
     /* Argument handling */
-    if( argc < 3 )
+    if( argc < 4 )
     {
         printf( "Usage: ./scoda MAX_NODE_ID DEGREE_THRESHOLD IGNORE_LINES < input_graph.txt > output_communities.txt\n");
         printf( "Parameters:\n" );

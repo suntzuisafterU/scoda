@@ -9,4 +9,5 @@ minimal_code/scoda
 # Datasets, compressed or otherwise.
 dataout
 datasets
+**/out/
 
