@@ -3,7 +3,7 @@
 DATADIR="../datasets"
 OUTDIR="out"
 
-if [ !-d $OUTDIR ]; then
+if [ ! -d $OUTDIR ]; then
   mkdir $OUTDIR
 fi
 
