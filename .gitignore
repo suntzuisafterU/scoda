@@ -3,6 +3,7 @@
 
 # Binaries and build generated code
 benchmark_code/build
+**/CMakeFiles
 
 minimal_code/scoda
 
