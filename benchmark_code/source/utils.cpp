@@ -14,6 +14,7 @@ long unsigned StopClock(long unsigned initTime) {
     return endTime - initTime;
 }
 
+using namespace std;
 int LoadGraph(char * graphFileName,
               std::vector< Edge >& edgeList,
               Node& maxNodeId) {
@@ -28,14 +29,16 @@ int LoadGraph(char * graphFileName,
 
     // Filter out header lines, 4 header lines in our files
     string line;
-
+    for(int i=0; i<4; i++){
+        getline(inFile, line);
+        cout << line << "\n";
+    }
 
     // Loading edges
     Node node1, node2;
     maxNodeId = 0;
     
     while( inFile >> node1 ) {
-        printf("printing node 1 %d\n", node1);
         inFile >> node2;
         edgeList.push_back(std::make_pair(node1, node2));
         if (node1 > maxNodeId) {

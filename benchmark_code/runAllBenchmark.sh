@@ -9,21 +9,18 @@
 #   NOTE: 0 means off.
 
 # run all datasets
-# VARS=(*)
-DATADIR="../datasets/"
+
+shopt -s nullglob
+VARS=(../datasets/*.ungraph*)
 OUTDIR="out/"
-VAR=$1 #commandline file name
-DEGREE=$2
 
-if [ -z $VAR ]; then
-    exit -1
-elif [ -z $DEGREE ]; then
-    echo "Second argument specifies degree parameter."
-    exit -1
-fi
-
-echo "$VAR"
-
-./build/scoda -f "$DATADIR$VAR" -o "$OUTDIR$VAR".scodaComms.txt -d "$DEGREE" 0 0
-
-
+for var in ${VARS[@]}; do
+    echo "Processing $var"
+    BASENAME="${var##*/}"
+    if [ $BASENAME == "com-amazon.ungraph.txt" ]; then
+        DEGREE=4
+    else
+        DEGREE=2
+    fi
+    ./build/scoda -f "$var" -o "$OUTDIR${var##*/}.scodaComms.txt" -d $DEGREE >| "$OUTDIR${var##*/}.timereport.txt"
+done
