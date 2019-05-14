@@ -20,14 +20,22 @@ int LoadGraph(char * graphFileName,
     // Opening file
     std::ifstream inFile;
     inFile.open((const char *)graphFileName);
+
     if(!inFile) {
         printf( "Graph: Error Openning Graph File\n" );
         return 1;
     }
+
+    // Filter out header lines, 4 header lines in our files
+    string line;
+
+
     // Loading edges
     Node node1, node2;
     maxNodeId = 0;
+    
     while( inFile >> node1 ) {
+        printf("printing node 1 %d\n", node1);
         inFile >> node2;
         edgeList.push_back(std::make_pair(node1, node2));
         if (node1 > maxNodeId) {

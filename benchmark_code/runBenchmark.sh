@@ -16,6 +16,6 @@ VAR=$1 #commandline file name
 
 echo "$VAR"
 
-./build/scoda -f "$DATADIR$VAR" -o "$OUTDIR$VAR".scodaComms.txt 0 0
+./build/scoda -f "$DATADIR$VAR" -o "$OUTDIR$VAR".scodaComms.txt -d "$2" 0 0
 
 

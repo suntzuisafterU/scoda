@@ -8,6 +8,7 @@
 #include <utility>
 #include <sys/time.h>
 #include <fstream>
+#include <string>
 #include "types.h"
 
 long unsigned StartClock();

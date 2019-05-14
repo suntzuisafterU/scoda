@@ -9,9 +9,8 @@ please refer to the minimal version of the code.
 
 Execute the following commands:
 
-    mkdir build
     cd build
-    cmake ..
+    cmake CMakeLists.txt
     make
 
 ### Usage
