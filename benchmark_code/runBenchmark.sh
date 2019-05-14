@@ -9,13 +9,13 @@
 #   NOTE: 0 means off.
 
 # run all datasets
-# VARS=(*)
 DATADIR="../datasets/"
 OUTDIR="out/"
 VAR=$1 #commandline file name
 DEGREE=$2
 
 if [ -z $VAR ]; then
+    echo "Enter the name of a file in ../datasets"
     exit -1
 elif [ -z $DEGREE ]; then
     echo "Second argument specifies degree parameter."

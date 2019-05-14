@@ -3,8 +3,9 @@
 #include <string.h>
 #include <inttypes.h>
 
-#define DEGREE(id) (algo_state[2*id])
-#define COMMUNITY(id) (algo_state[2*id+1])
+// Array of pairs, [(degree, community), (degree, community), ...]
+#define DEGREE(id) (algo_state[2*id]) // Defines function for accessing the degree of the ith node.
+#define COMMUNITY(id) (algo_state[2*id+1]) // Defines function for accessing the community id associated with the ith node.
 
 int main( int argc, char *argv[] )
 {
@@ -25,46 +26,57 @@ int main( int argc, char *argv[] )
     /* Parse degree_threshold & max_node_id */
     int32_t degree_threshold, max_node_id, ignore_lines;
 
-    sscanf( argv[1], "%" SCNd32, &max_node_id );
-    sscanf( argv[2], "%" SCNd32, &degree_threshold );
-    sscanf( argv[3], "%" SCNd32, &ignore_lines );
+    /* Read command line args */
+    sscanf( argv[1], "%" SCNd32, &max_node_id ); // Required for static memory allocation.
+    sscanf( argv[2], "%" SCNd32, &degree_threshold ); // Calculated as the mode of degree in the network.
+    sscanf( argv[3], "%" SCNd32, &ignore_lines ); // Ignore this many lines as a header.
 
     /* Memory allocation & initialisation */
-    char linebuf[BUFSIZ];
-    int32_t *algo_state = (int32_t *) malloc( 2 * max_node_id * sizeof( int32_t ) );
-    memset( algo_state, 0, 2 * max_node_id * sizeof( int32_t ) );
+    char linebuf[BUFSIZ]; // Buffer set to 1024 by bufset?
+    // int32_t is fixed width integer.  Does this match up with our desired GPU imp?
+    int32_t *algo_state = (int32_t *) malloc( 2 * max_node_id * sizeof( int32_t ) ); // allocate the array of pairs
+    memset( algo_state, 0, 2 * max_node_id * sizeof( int32_t ) ); // memset overwrites memory.  Write all zeroes to array
     for( int32_t i = 0 ; i < max_node_id ; i++ )
     {
-        COMMUNITY( i ) = i;
+        COMMUNITY( i ) = i; // Initialize every second element to community id associated with node of same id.
     }
 
     /* Waste ignore_lines lines from input stream */
     for( int32_t i = 0 ; i < ignore_lines ; i++ )
     {
+        /* fgets: Read from stream and store as C-String,
+        continues until BUFSIZ-1 or \n or EOF.
+        Auto terminates the string with last byte. */
         fgets( linebuf, BUFSIZ, stdin );
     }
 
     /* Main SCoDA loop */
     int32_t src_id, dst_id, src_deg, dst_deg;
-    while( fgets( linebuf, BUFSIZ, stdin ) != NULL )
-    {
+    while( fgets( linebuf, BUFSIZ, stdin ) != NULL ) { // fgets NULL on line that only contains EOF, or there could have been an error and ferror would be set.
+        /*      source,  expands to format string, store source, store dest */
         sscanf( linebuf, "%" SCNd32 "\t%" SCNd32, &src_id, &dst_id );
-        src_deg = DEGREE( src_id )++;
-        dst_deg = DEGREE( dst_id )++;
-        if( src_deg <= degree_threshold && dst_deg <= degree_threshold )
-        {
-            if( src_deg > dst_deg )
-            {
+        src_deg = DEGREE( src_id )++; // Index into array at 2-times id and update
+        dst_deg = DEGREE( dst_id )++; // degree of source and destination.
+        /* NOTE: In the future if we are experimenting with SCoDA we could 
+        change the way we ignore edges.  We could just change the && to ||
+        for example. Made a branch to try this on the benchmark code. 
+        Produces much fewer communities but I do not have a way to validate 
+        them at this time. TODO: Validate different versions of this with
+        F1 score and NMI. */
+        if( src_deg <= degree_threshold && dst_deg <= degree_threshold ) {
+            /* NOTE: I do not think SCoDA is a good candidate for pure GPU
+            implementation since it has:
+              a) conditional branching (see below)
+              b) random memory structure */
+            if( src_deg > dst_deg ) {
                 COMMUNITY( dst_id ) = COMMUNITY( src_id );
-            } else {
+            } else { // If equal, src_id is moved
                 COMMUNITY( src_id ) = COMMUNITY( dst_id );
             }
         }
     }
-    for( int32_t i = 0 ; i < max_node_id ; i++ )
-    {
-        if( DEGREE( i ) > 0 )
-        {
+    for( int32_t i = 0 ; i < max_node_id ; i++ ) {
+        if( DEGREE( i ) > 0 ) { // How often do we get a degree of zero?
             printf( "%" PRId32 "\t%" PRId32 "\n", i, COMMUNITY( i ) );
         }
     }
