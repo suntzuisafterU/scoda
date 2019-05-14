@@ -24,7 +24,7 @@ int RunAlgorithm(const std::vector< Edge >& edgeList,
             nodeCommunity[targetNode] = nextCommunityId;
             nextCommunityId++;
         }
-        if((nodeDegree[sourceNode] < degreeThreshold) && (nodeDegree[targetNode] < degreeThreshold)) {
+        if((nodeDegree[sourceNode] < degreeThreshold) || (nodeDegree[targetNode] < degreeThreshold)) {
             if(nodeDegree[sourceNode] < nodeDegree[targetNode]) {
                 nodeCommunity[sourceNode] = nodeCommunity[targetNode];
             } else {
