@@ -69,7 +69,7 @@ int main( int argc, char *argv[] )
             /* NOTE: I do not think SCoDA is a good candidate for pure GPU
             implementation since it has:
               a) conditional branching (see below)
-              b) random memory structure */
+              b) I can not think of a way to organize the memory access properly since this algorithm relies on a random stream. */
             if( src_deg > dst_deg ) {
                 COMMUNITY( dst_id ) = COMMUNITY( src_id );
             } else { // If equal, src_id is moved
