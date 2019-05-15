@@ -2,10 +2,13 @@
 #include <stdio.h>
 #include <string.h>
 #include <inttypes.h>
+#include <unordered_map>
 
 // Array of pairs, [(degree, community), (degree, community), ...]
 #define DEGREE(id) (algo_state[2*id]) // Defines function for accessing the degree of the ith node.
 #define COMMUNITY(id) (algo_state[2*id+1]) // Defines function for accessing the community id associated with the ith node.
+
+std::unordered_map<commid, std::vector<commid>> comm_adj_list;
 
 int main( int argc, char *argv[] )
 {
@@ -50,6 +53,19 @@ int main( int argc, char *argv[] )
         fgets( linebuf, BUFSIZ, stdin );
     }
 
+    /**
+     * Aarons custom fields (or equivalent cpp terminology)
+     */
+    int num_null_e = 0;
+
+    // NOTE: reference initialization from GPU imp:
+    // std::unordered_map<nid_t, std::vector<nid_t>> adjacency_list;
+    // TODO: Optional: as strings concat "commid1commid2" and map to edge weight.
+    // IMPORTANT: Undirected edges, therefor have commid1 > commid2, so that all entries
+    // in the adjacency list of our graph are 
+    std::unordered_map<commid, std::vector<commid>> comm_adj_list;
+    comm_adj_list.reserve(n);
+
     /* Main SCoDA loop */
     int32_t src_id, dst_id, src_deg, dst_deg;
     while( fgets( linebuf, BUFSIZ, stdin ) != NULL ) { // fgets NULL on line that only contains EOF, or there could have been an error and ferror would be set.
@@ -75,6 +91,35 @@ int main( int argc, char *argv[] )
             } else { // If equal, src_id is moved
                 COMMUNITY( src_id ) = COMMUNITY( dst_id );
             }
+        }
+        /////////////////////////////////// Add community edges for community graph here ////////////////////////////
+        /**
+         * Approach: Since we ignore edges that connect 2 nodes that have a degree above the threshold, 
+         * we know that these edges will define the connections between the communities that we are detecting.
+         * 2 possibilities:
+         *   a) Only use edges that connect 2 nodes that have BOTH exceeded the threshold 
+         *      (gives us three classes of edge.  transfer, null, and comm<-comm edges are 
+         *                                                            static since both nodes
+         *                                                            are locked into a community)
+         *   b) Use ALL edges that are ignored when making communities period (ALL null edges become comm edges)
+         *      NOTE: this may lead to connecting communities that have dynamic definitions.
+         * 
+         * I will implement both a) and b) and see how it goes.
+         */
+
+        // a) detect static community edges.
+        
+
+        /////////////////////////////// End new code /////////////////////////////////////////////////////////////////
+        // TODO: Try > and >=, (>= will mean that if both nodes have degree=degree_threshold then we will move 
+        //       communities AND add a community connecting edge at the same time.  Probably undesireable.)
+        else if ( src_deg > degree_threshold && dst_deg > degree_threshold){
+            // add community edge.  
+        }
+
+        // TODO: Remove after testing, this is just for counting null edges.
+        else {
+            num_null_e++;
         }
     }
     for( int32_t i = 0 ; i < max_node_id ; i++ ) {
