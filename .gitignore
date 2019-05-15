@@ -1,3 +1,5 @@
+**/.vscode/**/*.bin
+**/.vscode/**/*.ipch
 **/*.DS_Store
 
 # Binaries and build generated code
