@@ -63,7 +63,9 @@ int main( int argc, char *argv[] )
         Produces much fewer communities but I do not have a way to validate 
         them at this time. TODO: Validate different versions of this with
         F1 score and NMI. */
-        if( src_deg <= degree_threshold && dst_deg <= degree_threshold ) {
+        // This is the modification I am interested in testing:
+        // if( src_deg <= degree_threshold || dst_deg <= degree_threshold ) {
+        if( src_deg <= degree_threshold && dst_deg <= degree_threshold ) { // see mod one line up
             /* NOTE: I do not think SCoDA is a good candidate for pure GPU
             implementation since it has:
               a) conditional branching (see below)
