@@ -26,12 +26,13 @@ int main( int argc, char *argv[] )
     }
 
     /* Parse degree_threshold & max_node_id */
-    int32_t degree_threshold, max_node_id, ignore_lines;
+    int32_t degree_threshold, max_node_id, max_edge_id, ignore_lines;
 
     /* Read command line args */
     sscanf( argv[1], "%" SCNd32, &max_node_id ); // Required for static memory allocation.
-    sscanf( argv[2], "%" SCNd32, &degree_threshold ); // Calculated as the mode of degree in the network.
-    sscanf( argv[3], "%" SCNd32, &ignore_lines ); // Ignore this many lines as a header.
+    sscanf( argv[2], "%" SCNd32, &max_edge_id); // Required for static memory allocation.
+    sscanf( argv[3], "%" SCNd32, &degree_threshold ); // Calculated as the mode of degree in the network.
+    sscanf( argv[4], "%" SCNd32, &ignore_lines ); // Ignore this many lines as a header.
 
     /* Memory allocation & initialisation */
     char linebuf[BUFSIZ]; // Buffer set to 1024 by bufset?
@@ -48,8 +49,8 @@ int main( int argc, char *argv[] )
      */
     int num_null_e = 0; // Just for counting the number of FULLY ignored edges.
     // Allocate array for community edges
-    int32_t *comm_edges= (int32_t *) malloc( 2 * max_node_id * sizeof( int32_t ) ); // allocate the array of pairs
-    memset( comm_edges, 0, 2 * max_node_id * sizeof( int32_t ) ); // memset overwrites memory.  Write all zeroes to array
+    int32_t *comm_edges= (int32_t *) malloc( 2 * max_edge_id * sizeof( int32_t ) ); // allocate the array of pairs
+    memset( comm_edges, 0, 2 * max_edge_id * sizeof( int32_t ) ); // memset overwrites memory.  Write all zeroes to array
 
     /* Waste ignore_lines lines from input stream */
     for( int32_t i = 0 ; i < ignore_lines ; i++ )
