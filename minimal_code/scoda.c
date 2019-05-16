@@ -20,6 +20,7 @@ int main( int argc, char *argv[] )
         printf( "\t-STDIN: tab-separated edge list (each line: SRC_NODE <tab> DST_NODE)\n");
         printf( "\t-STDOUT: community detection result (each line: NODE <tab> COMMUNITY)\n"),
         printf( "\t-MAX_NODE_ID: int32 larger than all nodes IDs in the graph\n" );
+        printf( "\t-MAX_EDGE_ID: int32 larger than all possible edges in the graph\n" );
         printf( "\t-DEGREE_THRESHOLD: parameter of the algorithm\n" );
         printf( "\t-IGNORE_LINES: number of line to ignore at the beginning of the input file\n" );
         return EXIT_FAILURE;
@@ -44,13 +45,22 @@ int main( int argc, char *argv[] )
         COMMUNITY( i ) = i; // Initialize every second element to community id associated with node of same id.
     }
 
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////// New ////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
     /**
      * Aarons custom fields (or equivalent c terminology)
      */
     int num_null_e = 0; // Just for counting the number of FULLY ignored edges.
     // Allocate array for community edges
+    // TODO: Replace with more memory efficient data structure of some kind.
     int32_t *comm_edges= (int32_t *) malloc( 2 * max_edge_id * sizeof( int32_t ) ); // allocate the array of pairs
     memset( comm_edges, 0, 2 * max_edge_id * sizeof( int32_t ) ); // memset overwrites memory.  Write all zeroes to array
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////// End new ////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////
 
     /* Waste ignore_lines lines from input stream */
     for( int32_t i = 0 ; i < ignore_lines ; i++ )
