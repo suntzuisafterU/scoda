@@ -121,6 +121,7 @@ int main( int argc, char *argv[] )
             // add community edge.  
             COMM_EDGE_1(next_comm_edge_idx) = src_id; // Add community source edge.
             COMM_EDGE_2(next_comm_edge_idx) = dst_id; // Add community destination edge.
+            // TODO: Record degree of edges here, at least for reference.
             next_comm_edge_idx++;                     // Increment community edge count.
         }
 
@@ -135,5 +136,17 @@ int main( int argc, char *argv[] )
             printf( "%" PRId32 "\t%" PRId32 "\n", i, COMMUNITY( i ) );
         }
     }
+    //////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////// New printing code ////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////
+    for( int32_t i = 0; i < max_edge_id; i++ ){
+        if( COMM_EDGE_1( i ) != 0 ) { // Happens for all empty spots, could bail out first time this happens.
+            printf( "%" PRId32 "\t%" PRId32 "\n", COMM_EDGE_1( i ), COMM_EDGE_2( i ));
+        }
+    }
+    //////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////// End new printing ////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////
+
     return EXIT_SUCCESS;
 }
