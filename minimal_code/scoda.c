@@ -2,13 +2,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <inttypes.h>
-#include <unordered_map>
 
 // Array of pairs, [(degree, community), (degree, community), ...]
 #define DEGREE(id) (algo_state[2*id]) // Defines function for accessing the degree of the ith node.
 #define COMMUNITY(id) (algo_state[2*id+1]) // Defines function for accessing the community id associated with the ith node.
 
-std::unordered_map<commid, std::vector<commid>> comm_adj_list;
 
 int main( int argc, char *argv[] )
 {
@@ -57,15 +55,6 @@ int main( int argc, char *argv[] )
      * Aarons custom fields (or equivalent cpp terminology)
      */
     int num_null_e = 0;
-
-    // NOTE: reference initialization from GPU imp:
-    // std::unordered_map<nid_t, std::vector<nid_t>> adjacency_list;
-    // TODO: Optional: as strings concat "commid1commid2" and map to edge weight.
-    // IMPORTANT: Undirected edges, therefor have commid1 > commid2, so that all entries
-    // in the adjacency list of our graph are 
-    // TODO: malloc or alloc this or use new or how does this work with C++?  Will figure it out.
-    std::unordered_map<commid, std::vector<commid>> comm_adj_list;
-    comm_adj_list.reserve(n);
 
     /* Main SCoDA loop */
     int32_t src_id, dst_id, src_deg, dst_deg;
