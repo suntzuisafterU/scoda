@@ -1,4 +1,5 @@
 CXX:=g++
+CC:=gcc
 
 DEBUG?=0 # Conditionally set debug flag.  If not provided from command line?
 ifeq ($(DEBUG), 1)

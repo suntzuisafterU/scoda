@@ -6,7 +6,8 @@
 // Array of pairs, [(degree, community), (degree, community), ...]
 #define DEGREE(id) (algo_state[2*id]) // Defines function for accessing the degree of the ith node.
 #define COMMUNITY(id) (algo_state[2*id+1]) // Defines function for accessing the community id associated with the ith node.
-
+#define COMM_EDGE_1(idx) (comm_edges[idx*2]) // Get first community edge from pair.
+#define COMM_EDGE_2(idx) (comm_edges[idx*2+1]) // Get second community edge from pair.
 
 int main( int argc, char *argv[] )
 {
@@ -42,6 +43,14 @@ int main( int argc, char *argv[] )
         COMMUNITY( i ) = i; // Initialize every second element to community id associated with node of same id.
     }
 
+    /**
+     * Aarons custom fields (or equivalent c terminology)
+     */
+    int num_null_e = 0; // Just for counting the number of FULLY ignored edges.
+    // Allocate array for community edges
+    int32_t *comm_edges= (int32_t *) malloc( 2 * max_node_id * sizeof( int32_t ) ); // allocate the array of pairs
+    memset( comm_edges, 0, 2 * max_node_id * sizeof( int32_t ) ); // memset overwrites memory.  Write all zeroes to array
+
     /* Waste ignore_lines lines from input stream */
     for( int32_t i = 0 ; i < ignore_lines ; i++ )
     {
@@ -50,11 +59,6 @@ int main( int argc, char *argv[] )
         Auto terminates the string with last byte. */
         fgets( linebuf, BUFSIZ, stdin );
     }
-
-    /**
-     * Aarons custom fields (or equivalent cpp terminology)
-     */
-    int num_null_e = 0;
 
     /* Main SCoDA loop */
     int32_t src_id, dst_id, src_deg, dst_deg;
@@ -99,18 +103,18 @@ int main( int argc, char *argv[] )
 
         // a) detect static community edges.
         
-
-        /////////////////////////////// End new code /////////////////////////////////////////////////////////////////
         // TODO: Try > and >=, (>= will mean that if both nodes have degree=degree_threshold then we will move 
         //       communities AND add a community connecting edge at the same time.  Probably undesireable.)
         else if ( src_deg > degree_threshold && dst_deg > degree_threshold){
             // add community edge.  
+
         }
 
         // TODO: Remove after testing, this is just for counting null edges.
         else {
             num_null_e++;
         }
+        /////////////////////////////// End new code /////////////////////////////////////////////////////////////////
     }
     for( int32_t i = 0 ; i < max_node_id ; i++ ) {
         if( DEGREE( i ) > 0 ) { // How often do we get a degree of zero?
