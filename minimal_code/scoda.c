@@ -63,6 +63,7 @@ int main( int argc, char *argv[] )
     // TODO: Optional: as strings concat "commid1commid2" and map to edge weight.
     // IMPORTANT: Undirected edges, therefor have commid1 > commid2, so that all entries
     // in the adjacency list of our graph are 
+    // TODO: malloc or alloc this or use new or how does this work with C++?  Will figure it out.
     std::unordered_map<commid, std::vector<commid>> comm_adj_list;
     comm_adj_list.reserve(n);
 
