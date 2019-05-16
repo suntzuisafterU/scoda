@@ -52,7 +52,8 @@ int main( int argc, char *argv[] )
     /**
      * Aarons custom fields (or equivalent c terminology)
      */
-    int num_null_e = 0; // Just for counting the number of FULLY ignored edges.
+    int32_t num_null_e = 0; // Just for counting the number of FULLY ignored edges.
+    int32_t next_comm_edge_idx = 0; // keep track of community edge index when inserting.
     // Allocate array for community edges
     // TODO: Replace with more memory efficient data structure of some kind.
     int32_t *comm_edges= (int32_t *) malloc( 2 * max_edge_id * sizeof( int32_t ) ); // allocate the array of pairs
@@ -118,7 +119,9 @@ int main( int argc, char *argv[] )
         //       communities AND add a community connecting edge at the same time.  Probably undesireable.)
         else if ( src_deg > degree_threshold && dst_deg > degree_threshold){
             // add community edge.  
-
+            COMM_EDGE_1(next_comm_edge_idx) = src_id; // Add community source edge.
+            COMM_EDGE_2(next_comm_edge_idx) = dst_id; // Add community destination edge.
+            next_comm_edge_idx++;                     // Increment community edge count.
         }
 
         // TODO: Remove after testing, this is just for counting null edges.
