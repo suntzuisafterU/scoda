@@ -7,32 +7,32 @@ while [[ $# -gt 0 ]]
   do op="$1"
     case $op in
         -f )
-            INPATH="$1"
+            INPATH="$2"
             shift # past -f
             shift # past value
             ;;
         -o )
-            OUTPATH="$1"
+            OUTPATH="$2"
             shift
             shift
             ;;
         -d )
-            DEGREE="$1"
+            DEGREE="$2"
             shift
             shift
             ;;
         -n )
-            NUM_NODES="$1"
+            NUM_NODES="$2"
             shift
             shift
             ;;
         -m )
-            NUM_EDGES="$1"
+            NUM_EDGES="$2"
             shift
             shift
             ;;
         -i )
-            IGNORE_LINES="$1"
+            IGNORE_LINES="$2"
             shift
             shift
             ;;
@@ -49,6 +49,7 @@ fi
 
 # source for next 2 lines: https://stackoverflow.com/questions/965053/extract-filename-and-extension-in-bash
 BASENAME=$(basename -- "$INPATH") # Extract base file name here.
-EXT="${BASENAME##*.}"# Extract extension.
+EXT="${BASENAME##*.}" # Extract extension.
 
-./scoda $NUM_NODES $NUM_EDGES $DEGREE $IGNORE_LINES < "$INPATH" > "$OUTPATH"
+scoda $NUM_NODES $NUM_EDGES $DEGREE $IGNORE_LINES < "$INPATH" > "$OUTPATH"
+# n=548458, m=925876 for amazon dataset, ignore 4 lines, degree threshold 4
