@@ -6,12 +6,12 @@ USAGE="Usage: \n $SCRIPT_NAME -f <in file path> -o <out file path> -d <degree th
 while [[ $# -gt 0 ]]
   do op="$1"
     case $op in
-        -f)
+        -f )
             INPATH="$1"
             shift # past -f
             shift # past value
             ;;
-        -o)
+        -o )
             OUTPATH="$1"
             shift
             shift
