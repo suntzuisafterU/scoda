@@ -1,10 +1,11 @@
 #!/bin/bash
 
 SCRIPT_NAME="$0"
-USAGE="Usage: \n $SCRIPT_NAME -f <in file path> -o <out file path> -d <degree threshold> -n <max node id> -m <number of edges> -i <number of lines to ignore>" 
+USAGE="Usage: \n $SCRIPT_NAME -f <in file path> -o <out file path> -d <degree threshold> -n <max node id> -m <number of edges> -i <number of lines to ignore>"
 
-while "$#" -ne 0; do
-    case "$1" in
+while [[ $# -gt 0 ]]
+  do op="$1"
+    case $op in
         -f)
             INPATH="$1"
             shift # past -f
@@ -48,6 +49,6 @@ fi
 
 # source for next 2 lines: https://stackoverflow.com/questions/965053/extract-filename-and-extension-in-bash
 BASENAME=$(basename -- "$INPATH") # Extract base file name here.
-EXT="${BASENAME##*.}"# Extract extension. 
+EXT="${BASENAME##*.}"# Extract extension.
 
 ./scoda $NUM_NODES $NUM_EDGES $DEGREE $IGNORE_LINES < "$INPATH" > "$OUTPATH"
