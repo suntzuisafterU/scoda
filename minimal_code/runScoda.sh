@@ -51,5 +51,5 @@ fi
 BASENAME=$(basename -- "$INPATH") # Extract base file name here.
 EXT="${BASENAME##*.}" # Extract extension.
 
-scoda $NUM_NODES $NUM_EDGES $DEGREE $IGNORE_LINES < "$INPATH" > "$OUTPATH"
+scoda $NUM_NODES $NUM_EDGES $DEGREE $IGNORE_LINES < "$INPATH" >| "$OUTPATH"
 # n=548458, m=925876 for amazon dataset, ignore 4 lines, degree threshold 4
